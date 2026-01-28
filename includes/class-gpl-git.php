@@ -56,11 +56,13 @@ class GPL_Git {
             return false;
         }
 
-        // Build the command with environment variables to prevent interactive prompts
-        // GIT_TERMINAL_PROMPT=0 prevents Git from prompting for credentials
-        // GIT_SSH_COMMAND prevents SSH from prompting for passwords
-        $env_vars = 'GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="ssh -o BatchMode=yes"';
-        $command  = $env_vars . ' git ' . $command;
+        // Build the command with config options to prevent interactive prompts
+        // -c credential.helper= disables any configured credential helper
+        // -c core.askPass= disables askpass programs
+        // Use env command for environment variables (more portable)
+        $git_config = '-c credential.helper= -c core.askPass=';
+        $env_prefix = 'env GIT_TERMINAL_PROMPT=0';
+        $command    = $env_prefix . ' git ' . $git_config . ' ' . $command;
 
         // Change to the specified directory if provided
         if ( $path ) {
