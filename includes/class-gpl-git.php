@@ -109,14 +109,15 @@ class GPL_Git {
     /**
      * Clone a repository
      *
-     * @param string $url         Repository URL.
+     * @param string $url         Repository URL (may include auth token).
      * @param string $destination Destination directory.
      * @param string $branch      Optional branch to clone.
      * @return bool
      */
     public function clone_repo( $url, $destination, $branch = null ) {
-        $url = $this->sanitize_repo_url( $url );
-        if ( ! $url ) {
+        // Basic URL validation (allows token in URL: https://token@github.com/...)
+        // Full sanitization should be done before adding auth token
+        if ( empty( $url ) || ! preg_match( '/^https?:\/\/([\w.-]+@)?github\.com\//i', $url ) ) {
             $this->last_error = __( 'Invalid repository URL.', 'git-plugin-loader' );
             return false;
         }
