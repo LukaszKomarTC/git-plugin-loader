@@ -112,13 +112,14 @@ class GPL_Plugin_Manager {
         // Clone the repository
         if ( ! $this->git->clone_repo( $clone_url, $slug, $branch ) ) {
             $error = $this->git->get_last_error();
-            // Provide more helpful error messages
-            if ( strpos( $error, 'Authentication failed' ) !== false || strpos( $error, 'could not read Username' ) !== false ) {
-                if ( $is_private ) {
-                    $error = __( 'Authentication failed. Please check your GitHub token in Settings.', 'git-plugin-loader' );
-                } else {
-                    $error = __( 'Repository not accessible. If this is a private repository, please add your GitHub token in Settings.', 'git-plugin-loader' );
-                }
+            // Append helpful hint but keep original error for debugging
+            if ( strpos( $error, 'Authentication failed' ) !== false ||
+                 strpos( $error, 'could not read Username' ) !== false ||
+                 strpos( $error, 'terminal prompts disabled' ) !== false ) {
+                $hint = $is_private
+                    ? __( ' (Hint: Check your GitHub token in Settings)', 'git-plugin-loader' )
+                    : __( ' (Hint: If private repo, add GitHub token in Settings)', 'git-plugin-loader' );
+                $error .= $hint;
             }
             return new WP_Error( 'clone_failed', $error );
         }

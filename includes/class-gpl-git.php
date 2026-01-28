@@ -57,12 +57,11 @@ class GPL_Git {
         }
 
         // Build the command with config options to prevent interactive prompts
+        // GIT_TERMINAL_PROMPT=0 prevents credential prompts (inline var assignment works in sh/bash)
         // -c credential.helper= disables any configured credential helper
         // -c core.askPass= disables askpass programs
-        // Use env command for environment variables (more portable)
         $git_config = '-c credential.helper= -c core.askPass=';
-        $env_prefix = 'env GIT_TERMINAL_PROMPT=0';
-        $command    = $env_prefix . ' git ' . $git_config . ' ' . $command;
+        $command    = 'GIT_TERMINAL_PROMPT=0 git ' . $git_config . ' ' . $command;
 
         // Change to the specified directory if provided
         if ( $path ) {
