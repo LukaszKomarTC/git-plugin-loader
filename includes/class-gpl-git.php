@@ -56,8 +56,11 @@ class GPL_Git {
             return false;
         }
 
-        // Sanitize the command
-        $command = 'git ' . $command;
+        // Build the command with environment variables to prevent interactive prompts
+        // GIT_TERMINAL_PROMPT=0 prevents Git from prompting for credentials
+        // GIT_SSH_COMMAND prevents SSH from prompting for passwords
+        $env_vars = 'GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="ssh -o BatchMode=yes"';
+        $command  = $env_vars . ' git ' . $command;
 
         // Change to the specified directory if provided
         if ( $path ) {

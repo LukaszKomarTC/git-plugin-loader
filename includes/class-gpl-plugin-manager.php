@@ -95,18 +95,32 @@ class GPL_Plugin_Manager {
             }
         }
 
-        // Prepare clone URL (add token if private)
+        // Prepare clone URL (add token for authentication)
         $clone_url = $this->git->sanitize_repo_url( $url );
-        if ( $is_private ) {
-            $settings  = Git_Plugin_Loader::get_settings();
-            $token     = $this->github_api->encrypt_token( $settings['github_token'] );
-            $token     = $settings['github_token']; // Use actual token for cloning
+        $settings  = Git_Plugin_Loader::get_settings();
+
+        // Add token to URL if available (required for private repos, helpful for rate limits on public)
+        if ( ! empty( $settings['github_token'] ) ) {
+            // Token is stored encrypted, we need to use it directly in URL
+            // The GitHub API class handles decryption internally, but for git clone we need the raw token
+            $token     = $this->decrypt_token_for_clone( $settings['github_token'] );
             $clone_url = preg_replace( '/^https:\/\//', 'https://' . $token . '@', $clone_url );
+        } elseif ( $is_private ) {
+            return new WP_Error( 'token_required', __( 'A GitHub token is required to clone private repositories. Please add your token in Settings.', 'git-plugin-loader' ) );
         }
 
         // Clone the repository
         if ( ! $this->git->clone_repo( $clone_url, $slug, $branch ) ) {
-            return new WP_Error( 'clone_failed', $this->git->get_last_error() );
+            $error = $this->git->get_last_error();
+            // Provide more helpful error messages
+            if ( strpos( $error, 'Authentication failed' ) !== false || strpos( $error, 'could not read Username' ) !== false ) {
+                if ( $is_private ) {
+                    $error = __( 'Authentication failed. Please check your GitHub token in Settings.', 'git-plugin-loader' );
+                } else {
+                    $error = __( 'Repository not accessible. If this is a private repository, please add your GitHub token in Settings.', 'git-plugin-loader' );
+                }
+            }
+            return new WP_Error( 'clone_failed', $error );
         }
 
         // Get current commit info
@@ -531,5 +545,51 @@ class GPL_Plugin_Manager {
         }
 
         return rmdir( $dir );
+    }
+
+    /**
+     * Decrypt token for use in git clone URL
+     *
+     * @param string $encrypted_token Encrypted token from settings.
+     * @return string Decrypted token.
+     */
+    private function decrypt_token_for_clone( $encrypted_token ) {
+        if ( empty( $encrypted_token ) ) {
+            return '';
+        }
+
+        $key = $this->get_encryption_key();
+
+        if ( function_exists( 'openssl_decrypt' ) ) {
+            $decoded = base64_decode( $encrypted_token );
+            if ( strlen( $decoded ) >= 16 ) {
+                $iv        = substr( $decoded, 0, 16 );
+                $encrypted = substr( $decoded, 16 );
+                $decrypted = openssl_decrypt( $encrypted, 'AES-256-CBC', $key, 0, $iv );
+                if ( false !== $decrypted ) {
+                    return $decrypted;
+                }
+            }
+        }
+
+        // Fallback: try simple base64 decode
+        $decoded = base64_decode( $encrypted_token );
+        if ( $decoded !== false ) {
+            return $decoded;
+        }
+
+        return $encrypted_token;
+    }
+
+    /**
+     * Get encryption key for token decryption
+     *
+     * @return string
+     */
+    private function get_encryption_key() {
+        if ( defined( 'AUTH_KEY' ) && ! empty( AUTH_KEY ) ) {
+            return hash( 'sha256', AUTH_KEY );
+        }
+        return hash( 'sha256', 'git-plugin-loader-default-key' );
     }
 }
