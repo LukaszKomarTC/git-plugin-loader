@@ -1,0 +1,393 @@
+/**
+ * Git Plugin Loader Admin Styles
+ *
+ * @package Git_Plugin_Loader
+ */
+
+/* General */
+.gpl-wrap {
+    max-width: 1200px;
+}
+
+.gpl-wrap h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Cards */
+.gpl-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.gpl-card h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Add Form */
+.gpl-add-form {
+    margin: 20px 0;
+}
+
+.gpl-add-form .form-table th {
+    width: 200px;
+}
+
+.gpl-status-message {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+.gpl-status-message.error {
+    color: #d63638;
+}
+
+.gpl-status-message.success {
+    color: #00a32a;
+}
+
+/* Plugins Table */
+.gpl-plugins-table {
+    margin-top: 20px;
+}
+
+.gpl-plugins-table .column-name {
+    width: 25%;
+}
+
+.gpl-plugins-table .column-repo {
+    width: 20%;
+}
+
+.gpl-plugins-table .column-branch {
+    width: 15%;
+}
+
+.gpl-plugins-table .column-status {
+    width: 12%;
+}
+
+.gpl-plugins-table .column-last-sync {
+    width: 12%;
+}
+
+.gpl-plugins-table .column-actions {
+    width: 16%;
+}
+
+.gpl-commit-info {
+    color: #666;
+    font-size: 12px;
+}
+
+.gpl-commit-info code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+/* Badges */
+.gpl-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.gpl-badge-active {
+    background: #d7f0db;
+    color: #1e4620;
+}
+
+.gpl-badge-private {
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.gpl-badge-autosync {
+    background: #e0f0ff;
+    color: #0073aa;
+}
+
+/* Status Badges */
+.gpl-status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.gpl-status-ok {
+    background: #d7f0db;
+    color: #1e4620;
+}
+
+.gpl-status-update {
+    background: #fcf0e3;
+    color: #8a6d3b;
+}
+
+.gpl-status-syncing {
+    background: #e0f0ff;
+    color: #0073aa;
+}
+
+.gpl-status-error {
+    background: #fce4e4;
+    color: #8b0000;
+}
+
+/* Actions */
+.gpl-actions {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.gpl-actions .button {
+    padding: 0 8px;
+    min-height: 28px;
+    line-height: 26px;
+}
+
+.gpl-more-actions {
+    position: relative;
+}
+
+.gpl-more-btn {
+    padding: 0 5px !important;
+}
+
+.gpl-more-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.gpl-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    z-index: 100;
+}
+
+.gpl-dropdown.active {
+    display: block;
+}
+
+.gpl-dropdown-item {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #2c3338;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.gpl-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.gpl-dropdown-item:hover {
+    background: #f0f0f1;
+    color: #2c3338;
+}
+
+.gpl-dropdown-item.gpl-remove-btn {
+    color: #d63638;
+}
+
+.gpl-dropdown-item.gpl-remove-btn:hover {
+    background: #fce4e4;
+}
+
+.gpl-dropdown-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Branch Select */
+.gpl-branch-select {
+    max-width: 120px;
+}
+
+.gpl-load-branches {
+    margin-left: 5px;
+}
+
+/* No Plugins */
+.gpl-no-plugins {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.gpl-no-plugins p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+/* System Error */
+.gpl-system-error {
+    background: #fce4e4;
+    border: 1px solid #d63638;
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.gpl-system-error p {
+    margin: 0;
+    color: #8b0000;
+}
+
+/* System Status */
+.gpl-system-status th {
+    font-weight: normal;
+}
+
+.gpl-status-ok {
+    color: #00a32a;
+}
+
+.gpl-status-ok .dashicons {
+    color: #00a32a;
+}
+
+.gpl-status-error {
+    color: #d63638;
+}
+
+.gpl-status-error .dashicons {
+    color: #d63638;
+}
+
+.gpl-status-warning {
+    color: #dba617;
+}
+
+.gpl-status-warning .dashicons {
+    color: #dba617;
+}
+
+/* Spinner */
+.column-actions .spinner {
+    float: none;
+    margin: 0;
+}
+
+/* Submit row */
+.submit .spinner {
+    float: none;
+    margin-left: 5px;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .gpl-plugins-table .column-repo,
+    .gpl-plugins-table .column-last-sync {
+        display: none;
+    }
+
+    .gpl-plugins-table .column-name {
+        width: 35%;
+    }
+
+    .gpl-plugins-table .column-branch {
+        width: 20%;
+    }
+
+    .gpl-plugins-table .column-status {
+        width: 20%;
+    }
+
+    .gpl-plugins-table .column-actions {
+        width: 25%;
+    }
+
+    .gpl-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .gpl-add-form .form-table th {
+        width: auto;
+    }
+}
+
+/* GitHub Icon for Menu */
+.dashicons-github:before {
+    content: "\f09b";
+    font-family: dashicons;
+}
+
+/* Alternative: Use custom SVG icon */
+#adminmenu .toplevel_page_git-plugin-loader .wp-menu-image:before {
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0a5aa'%3E%3Cpath d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    opacity: 0.6;
+}
+
+#adminmenu .toplevel_page_git-plugin-loader:hover .wp-menu-image:before,
+#adminmenu .toplevel_page_git-plugin-loader.current .wp-menu-image:before,
+#adminmenu .toplevel_page_git-plugin-loader.wp-has-current-submenu .wp-menu-image:before {
+    opacity: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E");
+}
+
+/* Ensure form table styling */
+.gpl-card .form-table {
+    margin-top: 0;
+}
+
+.gpl-card .form-table td {
+    padding: 15px 10px;
+}
+
+.gpl-card .form-table th {
+    padding: 20px 10px 20px 0;
+}
+
+/* Export exclusions textarea */
+#gpl-export-exclusions {
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12px;
+}
+
+/* Add new button styling */
+.gpl-add-new-btn {
+    margin-left: 10px;
+}
+
+/* Loading state for buttons */
+.button[disabled] {
+    cursor: not-allowed;
+}
