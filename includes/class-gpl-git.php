@@ -155,7 +155,15 @@ class GPL_Git {
             return false;
         }
 
-        $result = $this->execute( 'pull', $path );
+        // Use --ff-only to avoid merge commits, or fall back to regular merge
+        // Also set pull.rebase=false to avoid the "divergent branches" warning
+        $result = $this->execute( '-c pull.rebase=false pull --ff-only', $path );
+
+        // If fast-forward fails, try regular pull with merge
+        if ( false === $result ) {
+            $result = $this->execute( '-c pull.rebase=false pull', $path );
+        }
+
         return false !== $result;
     }
 
