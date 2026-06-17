@@ -68,6 +68,7 @@ class GPL_Ajax {
             'gpl_toggle_autosync',
             'gpl_get_refs',
             'gpl_change_branch',
+            'gpl_toggle_active',
         );
 
         foreach ( $actions as $action ) {
@@ -446,5 +447,64 @@ class GPL_Ajax {
             'message' => __( 'Branch changed successfully.', 'git-plugin-loader' ),
             'plugin'  => $result,
         ) );
+    }
+
+    /**
+     * AJAX: Toggle plugin active state
+     */
+    public function ajax_toggle_active() {
+        if ( ! $this->verify_request() ) {
+            return;
+        }
+
+        $slug = isset( $_POST['slug'] ) ? sanitize_file_name( wp_unslash( $_POST['slug'] ) ) : '';
+
+        if ( empty( $slug ) ) {
+            wp_send_json_error( array( 'message' => __( 'Plugin slug is required.', 'git-plugin-loader' ) ) );
+            return;
+        }
+
+        $plugins = Git_Plugin_Loader::get_managed_plugins();
+
+        if ( ! isset( $plugins[ $slug ] ) ) {
+            wp_send_json_error( array( 'message' => __( 'Plugin not found.', 'git-plugin-loader' ) ) );
+            return;
+        }
+
+        $plugin_file = $plugins[ $slug ]['wp_plugin_file'];
+
+        if ( empty( $plugin_file ) ) {
+            wp_send_json_error( array( 'message' => __( 'Plugin file not found. The repository may not contain a valid WordPress plugin.', 'git-plugin-loader' ) ) );
+            return;
+        }
+
+        // Include plugin.php for activate/deactivate functions
+        if ( ! function_exists( 'activate_plugin' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        $is_active = is_plugin_active( $plugin_file );
+
+        if ( $is_active ) {
+            // Deactivate
+            deactivate_plugins( $plugin_file );
+            wp_send_json_success( array(
+                'message'   => __( 'Plugin deactivated.', 'git-plugin-loader' ),
+                'is_active' => false,
+            ) );
+        } else {
+            // Activate
+            $result = activate_plugin( $plugin_file );
+
+            if ( is_wp_error( $result ) ) {
+                wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+                return;
+            }
+
+            wp_send_json_success( array(
+                'message'   => __( 'Plugin activated.', 'git-plugin-loader' ),
+                'is_active' => true,
+            ) );
+        }
     }
 }

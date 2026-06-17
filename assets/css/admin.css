@@ -162,6 +162,28 @@
     line-height: 26px;
 }
 
+.gpl-btn-activate {
+    background: #2271b1 !important;
+    border-color: #2271b1 !important;
+    color: #fff !important;
+}
+
+.gpl-btn-activate:hover {
+    background: #135e96 !important;
+    border-color: #135e96 !important;
+}
+
+.gpl-btn-deactivate {
+    background: #dba617 !important;
+    border-color: #dba617 !important;
+    color: #fff !important;
+}
+
+.gpl-btn-deactivate:hover {
+    background: #c09000 !important;
+    border-color: #c09000 !important;
+}
+
 .gpl-more-actions {
     position: relative;
 }

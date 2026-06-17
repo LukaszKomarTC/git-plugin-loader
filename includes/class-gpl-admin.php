@@ -294,6 +294,9 @@ class GPL_Admin {
                                         </td>
                                         <td class="column-actions">
                                             <div class="gpl-actions">
+                                                <button type="button" class="button gpl-activate-btn <?php echo $plugin['is_active'] ? 'gpl-btn-deactivate' : 'gpl-btn-activate'; ?>" data-slug="<?php echo esc_attr( $slug ); ?>" data-active="<?php echo $plugin['is_active'] ? '1' : '0'; ?>">
+                                                    <?php echo $plugin['is_active'] ? esc_html__( 'Deactivate', 'git-plugin-loader' ) : esc_html__( 'Activate', 'git-plugin-loader' ); ?>
+                                                </button>
                                                 <button type="button" class="button gpl-sync-btn" data-slug="<?php echo esc_attr( $slug ); ?>">
                                                     <?php esc_html_e( 'Sync', 'git-plugin-loader' ); ?>
                                                 </button>

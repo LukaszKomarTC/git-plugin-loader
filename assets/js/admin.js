@@ -31,6 +31,7 @@
             $(document).on('submit', '#gpl-add-plugin-form', this.addPlugin);
 
             // Plugin actions
+            $(document).on('click', '.gpl-activate-btn', this.toggleActive);
             $(document).on('click', '.gpl-sync-btn', this.syncPlugin);
             $(document).on('click', '.gpl-check-btn', this.checkUpdates);
             $(document).on('click', '.gpl-export-btn', this.exportPlugin);
@@ -250,6 +251,55 @@
                     $btn.prop('disabled', false);
                 },
                 complete: function() {
+                    $spinner.removeClass('is-active');
+                }
+            });
+        },
+
+        /**
+         * Toggle plugin active state
+         */
+        toggleActive: function(e) {
+            e.preventDefault();
+
+            var $btn = $(this);
+            var $row = $btn.closest('tr');
+            var slug = $btn.data('slug');
+            var $spinner = $row.find('.spinner');
+            var isActive = $btn.data('active') === 1;
+
+            $btn.prop('disabled', true);
+            $spinner.addClass('is-active');
+
+            $.ajax({
+                url: gplAdmin.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'gpl_toggle_active',
+                    nonce: gplAdmin.nonce,
+                    slug: slug
+                },
+                success: function(response) {
+                    if (response.success) {
+                        var $name = $row.find('.column-name');
+                        if (response.data.is_active) {
+                            $btn.text('Deactivate').data('active', 1).removeClass('gpl-btn-activate').addClass('gpl-btn-deactivate');
+                            if (!$name.find('.gpl-badge-active').length) {
+                                $name.find('strong').after('<span class="gpl-badge gpl-badge-active">Active</span>');
+                            }
+                        } else {
+                            $btn.text('Activate').data('active', 0).removeClass('gpl-btn-deactivate').addClass('gpl-btn-activate');
+                            $name.find('.gpl-badge-active').remove();
+                        }
+                    } else {
+                        alert(response.data.message);
+                    }
+                },
+                error: function() {
+                    alert(gplAdmin.strings.error);
+                },
+                complete: function() {
+                    $btn.prop('disabled', false);
                     $spinner.removeClass('is-active');
                 }
             });
